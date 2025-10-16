@@ -6,10 +6,9 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Environment (mantén solo el ejemplo)
+# Environment 
 .env.example
 .env.*
-!/.env.example
 web/.env.local
 
 # Logs
@@ -29,6 +28,7 @@ web/.next/
 web/out/
 web/dist/
 web/build/
+web/.env/
 
 # Supabase (metadata local)
 supabase/.temp/

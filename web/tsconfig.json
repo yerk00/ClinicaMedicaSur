@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    // 👉 añade los tipos globales de test
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    // 👉 incluye archivos de prueba y setup
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "vitest.config.mts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
