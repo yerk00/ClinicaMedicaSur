@@ -1,0 +1,35 @@
+# OS / Editors
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Environment (mantén solo el ejemplo)
+.env.example
+.env.*
+!/.env.example
+web/.env.local
+
+# Logs
+logs
+*.log
+*.log.*
+pnpm-lock.debug.log
+
+# Node en raíz (por si acaso)
+node_modules/
+node_modeles/
+
+# Next.js (subproyecto en /web)
+web/node_modules/
+web/node_modulos/
+web/.next/
+web/out/
+web/dist/
+web/build/
+
+# Supabase (metadata local)
+supabase/.temp/
+supabase/.branches
