@@ -352,7 +352,7 @@ export default function Home() {
         <section className="relative bg-white text-gray-800 py-24 px-4 sm:px-6 lg:px-8">
           <AnimatedInView delay={0} className="max-w-6xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-emerald-600 mb-4">
-              ¿Cómo funciona SymptomSync?
+              ¿Cómo funciona Clinica Medica Sur?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Un proceso sencillo para transformar tu salud.
@@ -427,7 +427,7 @@ export default function Home() {
         <section className="relative bg-gradient-to-b from-cyan-50 via-white to-emerald-50 text-gray-800 py-24 px-4 sm:px-6 lg:px-8">
         <AnimatedInView delay={0} className="max-w-6xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold text-cyan-700 tracking-tight mb-4">
-            ¿Por qué elegir SymptomSync?
+            ¿Por qué elegir Clinica Medica Sur?
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Las razones por las que miles de usuarios confían en nosotros.
