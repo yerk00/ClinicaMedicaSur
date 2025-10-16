@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createMedicalRecord, BLOOD_GROUPS } from "@/lib/medicalRecords";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,10 +8,11 @@ import { toast } from "sonner";
 interface Props {
   patientId: string;
   doctorId: string;
-  onRecordCreated?: () => void; // Callback para refrescar vista
+  existingRecord?: any;       // <-- opcional para editar (prefill)
+  onRecordCreated?: () => void; // callback para refrescar vista
 }
 
-export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated }: Props) {
+export default function MedicalRecordForm({ patientId, doctorId, existingRecord, onRecordCreated }: Props) {
   const [form, setForm] = useState({
     grupo_sanguineo: "" as string,
     transfusiones_previas: false,
@@ -27,6 +28,25 @@ export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated
     vacunas: "",
   });
   const [loading, setLoading] = useState(false);
+
+  // Prefill cuando venga un registro existente
+  useEffect(() => {
+    if (!existingRecord) return;
+    setForm({
+      grupo_sanguineo: existingRecord.grupo_sanguineo ?? "",
+      transfusiones_previas: Boolean(existingRecord.transfusiones_previas),
+      transfusiones_detalle: existingRecord.transfusiones_detalle ?? "",
+
+      enfermedades_cronicas: existingRecord.enfermedades_cronicas ?? "",
+      alergias: existingRecord.alergias ?? "",
+      medicacion_actual: existingRecord.medicacion_actual ?? "",
+      cirugias_previas: existingRecord.cirugias_previas ?? "",
+      antecedentes_familiares: existingRecord.antecedentes_familiares ?? "",
+      consumo_sustancias: existingRecord.consumo_sustancias ?? "",
+      actividad_fisica: existingRecord.actividad_fisica ?? "",
+      vacunas: existingRecord.vacunas ?? "",
+    });
+  }, [existingRecord]);
 
   const handleText = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -51,6 +71,7 @@ export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated
     setLoading(true);
 
     try {
+      // Mantengo tu lógica: usa createMedicalRecord (si es upsert en tu backend, editará; si no, creará)
       await createMedicalRecord({
         user_profile_id: patientId,
         created_by: doctorId,
@@ -69,7 +90,7 @@ export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated
         vacunas: form.vacunas || null,
       });
 
-      toast.success("Registro médico guardado correctamente");
+      toast.success(existingRecord ? "Registro médico actualizado" : "Registro médico guardado");
       onRecordCreated?.();
     } catch (error: any) {
       toast.error(error?.message || "Error al guardar el registro médico");
@@ -80,7 +101,9 @@ export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto p-4 rounded-md border bg-card">
-      <h2 className="text-lg font-semibold mb-2">Registrar información médica</h2>
+      <h2 className="text-lg font-semibold mb-2">
+        {existingRecord ? "Editar registro médico" : "Registrar información médica"}
+      </h2>
 
       {/* Datos clínicos */}
       <div className="grid gap-4 md:grid-cols-2">
@@ -209,7 +232,7 @@ export default function MedicalRecordForm({ patientId, doctorId, onRecordCreated
       </div>
 
       <Button type="submit" disabled={loading} className="cursor-pointer">
-        {loading ? "Guardando..." : "Guardar registro médico"}
+        {loading ? "Guardando..." : existingRecord ? "Guardar cambios" : "Guardar registro médico"}
       </Button>
     </form>
   );

@@ -197,15 +197,22 @@ export default function PatientsPage() {
           }
         }
 
-        // Orden final (más recientes primero)
+        // === ORDEN FINAL: "citas" más recientes primero ===
+        // 1) Prioriza registros cuya última atención provenga de "cita"
+        // 2) Dentro de cada grupo, ordena por last_event_at DESC (más reciente)
+        // 3) Como último recurso, usa created_at DESC (para quienes no tienen atención)
         const ordered = [...base].sort((a, b) => {
-          const da = a.last_event_at
-            ? new Date(a.last_event_at).getTime()
-            : (a.created_at ? new Date(a.created_at).getTime() : 0);
-          const db = b.last_event_at
-            ? new Date(b.last_event_at).getTime()
-            : (b.created_at ? new Date(b.created_at).getTime() : 0);
-          return db - da;
+          const aw = a.last_source === "cita" ? 1 : 0;
+          const bw = b.last_source === "cita" ? 1 : 0;
+          if (bw !== aw) return bw - aw;
+
+          const ad = a.last_event_at ? new Date(a.last_event_at).getTime() : -Infinity;
+          const bd = b.last_event_at ? new Date(b.last_event_at).getTime() : -Infinity;
+          if (bd !== ad) return bd - ad;
+
+          const ac = a.created_at ? new Date(a.created_at).getTime() : -Infinity;
+          const bc = b.created_at ? new Date(b.created_at).getTime() : -Infinity;
+          return bc - ac;
         });
 
         setPatients(ordered);
@@ -305,7 +312,7 @@ export default function PatientsPage() {
           {/* Nota */}
           <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
             <Info className="h-4 w-4" />
-            Ordenado por <b className="mx-1">última atención</b> (consulta/cita) más reciente.
+            Ordenado por <b className="mx-1">última cita programada</b> (y luego última atención / creación).
           </div>
 
           {/* Tabla */}
@@ -334,7 +341,7 @@ export default function PatientsPage() {
                           <th className={`px-3 ${padY}`}>CI</th>
                           <th className={`px-3 ${padY}`}>Nombre</th>
                           <th className={`px-3 ${padY}`}>Área</th>
-                          <th className={`px-3 ${padY}`}>Última consulta</th>
+                          <th className={`px-3 ${padY}`}>Última consulta/cita</th>
                           <th className={`px-3 ${padY} text-right`}>Acciones</th>
                         </tr>
                       </thead>
@@ -429,11 +436,11 @@ export default function PatientsPage() {
                         </DropdownMenuContent>
                       </DropdownMenu>
                       <div className="flex items-center gap-1">
-                        <Button size="sm" variant="outline" onClick={() => setPage(1)} disabled={page <= 1}>{'«'}</Button>
-                        <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>{'‹'}</Button>
+                        <Button size="sm" variant="outline" onClick={() => setPage(1)} disabled={page <= 1}>{"«"}</Button>
+                        <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>{"‹"}</Button>
                         <span className="text-sm text-muted-foreground px-2">{page} / {pageCount}</span>
-                        <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.min(pageCount, p + 1))} disabled={page >= pageCount}>{'›'}</Button>
-                        <Button size="sm" variant="outline" onClick={() => setPage(pageCount)} disabled={page >= pageCount}>{'»'}</Button>
+                        <Button size="sm" variant="outline" onClick={() => setPage((p) => Math.min(pageCount, p + 1))} disabled={page >= pageCount}>{"›"}</Button>
+                        <Button size="sm" variant="outline" onClick={() => setPage(pageCount)} disabled={page >= pageCount}>{"»"}</Button>
                       </div>
                     </div>
                   </div>
@@ -498,7 +505,9 @@ function MedicalHeader({
               <h1 className="text-xl font-semibold leading-none tracking-tight">{name}</h1>
               <Badge variant="outline" className="gap-1">{role || "—"}</Badge>
             </div>
-            <p className="text-sm text-muted-foreground">Lista de pacientes • Orden por <b>última atención</b>.</p>
+            <p className="text-sm text-muted-foreground">
+              Lista de pacientes • Orden por <b>última cita programada</b> (después última atención/creación).
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">

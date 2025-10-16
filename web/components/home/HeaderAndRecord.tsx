@@ -15,6 +15,17 @@ import {
 } from "lucide-react";
 import MedicalRecordForm from "@/components/medical/MedicalRecordForm";
 
+// shadcn/ui Dialog
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader as DialogH,
+  DialogTitle as DialogT,
+  DialogDescription as DialogD,
+  DialogFooter as DialogF,
+} from "@/components/ui/dialog";
+
 /* ---------- helpers ---------- */
 type Props = {
   userName: string;
@@ -99,7 +110,7 @@ export default function HeaderAndRecord({
   doctorId,
   onRecordSaved,
 }: Props) {
-  const [showForm, setShowForm] = React.useState(false);
+  const [open, setOpen] = React.useState(false); // controla el Dialog
 
   // normaliza campos a chips
   const enfermedades = toItems(medicalRecord?.enfermedades_cronicas);
@@ -114,10 +125,12 @@ export default function HeaderAndRecord({
   const transfPrev = medicalRecord?.transfusiones_previas as boolean | null | undefined;
   const transfDet = (medicalRecord?.transfusiones_detalle as string) || "";
 
+  const titleBtn = medicalRecord ? "Editar registro" : "Crear registro";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
       <div className="mx-auto max-w-7xl space-y-4">
-        {/* Card cabecera: ahora incluye el paciente */}
+        {/* Card cabecera */}
         <Card className="overflow-hidden border-0 bg-white/95 shadow-md dark:bg-slate-800/95">
           <div className="h-1 w-full bg-gradient-to-r from-cyan-700 via-cyan-600 to-emerald-600" />
           <CardHeader className="py-3">
@@ -128,7 +141,7 @@ export default function HeaderAndRecord({
                   Registro médico
                 </CardTitle>
 
-                {/* Chip de paciente integrado */}
+                {/* Chip paciente */}
                 {selectedPatientName && (
                   <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/60 bg-white px-3 py-1 text-[13px] shadow-sm dark:border-cyan-800/50 dark:bg-slate-800">
                     <div className="flex items-center justify-center rounded-full border border-cyan-200 text-cyan-700 dark:border-cyan-700/40 dark:text-cyan-300 h-6 w-6">
@@ -142,48 +155,54 @@ export default function HeaderAndRecord({
                 )}
               </div>
 
-              <div className="flex gap-2">
-                {!showForm ? (
+              {/* Trigger del modal */}
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
                   <Button
-                    onClick={() => setShowForm(true)}
-                    className="bg-cyan-600 text-white shadow-sm hover:bg-cyan-700"
+                    className="bg-cyan-600 text-white shadow-sm hover:bg-cyan-700 cursor-pointer"
                     size="sm"
                   >
-                    {medicalRecord ? "Editar" : "Crear"} registro
+                    {titleBtn}
                   </Button>
-                ) : (
-                  <Button
-                    onClick={() => setShowForm(false)}
-                    variant="outline"
-                    size="sm"
-                    className="border-slate-300 dark:border-slate-600"
-                  >
-                    Cancelar
-                  </Button>
-                )}
-              </div>
+                </DialogTrigger>
+
+                {/* Ventana mediana */}
+                <DialogContent className="max-w-2xl sm:max-w-3xl">
+                  <DialogH>
+                    <DialogT>{titleBtn}</DialogT>
+                    <DialogD>
+                      {medicalRecord ? "Actualiza los datos del registro médico del paciente." : "Completa los campos para crear un registro médico."}
+                    </DialogD>
+                  </DialogH>
+
+                  {/* Contenido: el formulario (prefill si hay registro) */}
+                  <div className="max-h-[70vh] overflow-auto rounded-md border bg-background p-2">
+                    <MedicalRecordForm
+                      patientId={patientId as string}
+                      doctorId={doctorId as string}
+                      existingRecord={medicalRecord ?? undefined}
+                      onRecordCreated={() => {
+                        onRecordSaved?.();
+                        setOpen(false);
+                      }}
+                    />
+                  </div>
+
+                  <DialogF>
+                    <Button variant="outline" onClick={() => setOpen(false)} className="ml-auto">
+                      Cerrar
+                    </Button>
+                  </DialogF>
+                </DialogContent>
+              </Dialog>
             </div>
           </CardHeader>
 
-          <CardContent className="pt-0 pb-2">
-            {showForm ? (
-              <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
-                <MedicalRecordForm
-                  patientId={patientId}
-                  doctorId={doctorId}
-                  existingRecord={medicalRecord}
-                  onSaved={() => {
-                    onRecordSaved?.();
-                    setShowForm(false);
-                  }}
-                />
-              </div>
-            ) : null}
-          </CardContent>
+          {/* (Quitamos el inline form para que ahora SIEMPRE sea modal) */}
         </Card>
 
-        {/* GRID 2:1 */}
-        {medicalRecord && !showForm && (
+        {/* GRID 2:1 (solo cuando NO está abierto el modal, para evitar scroll doble raro) */}
+        {medicalRecord && !open && (
           <div className="grid gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
             {/* IZQUIERDA */}
             <div className="space-y-3">
@@ -254,7 +273,7 @@ export default function HeaderAndRecord({
 
             {/* DERECHA */}
             <div className="space-y-3">
-              {/* MINI: solo grupo sanguíneo, ultra compacto */}
+              {/* MINI: Grupo sanguíneo */}
               <Section title="Grupo sanguíneo" icon={<HeartPulse className="h-5 w-5" />} variant="mini">
                 <Tag tone="violet" size="xs">{grupoSang || "—"}</Tag>
               </Section>
