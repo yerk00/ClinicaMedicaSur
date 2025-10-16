@@ -6,7 +6,7 @@ Sistema clínico para gestión de pacientes, historial médico y **asistencia di
 
 ---
 
-## 📦 Stack
+## Stack
 
 - **Frontend:** Next.js + React + TypeScript, TailwindCSS, shadcn/ui (Radix), TanStack Query, React Hook Form + Zod, Framer Motion.
 - **Gráficos:** Recharts / Chart.js.
@@ -18,7 +18,7 @@ Sistema clínico para gestión de pacientes, historial médico y **asistencia di
 
 ---
 
-## ✨ Funcionalidades principales
+## Funcionalidades principales
 
 - **Gestión de pacientes:** perfiles, historial clínico, consultas y archivos asociados.
 - **Subida de documentos:** bucket `documents` con metadatos (`user_profile_id`, `uploaded_by`, `tags`).
@@ -27,7 +27,4 @@ Sistema clínico para gestión de pacientes, historial médico y **asistencia di
 - **Recordatorios:** de citas y medicación, con job programado que crea notificaciones.
 - **Módulo Admin:** base para gestión de usuarios y permisos.
 
----
-
-## 🗂️ Estructura del repositorio
 
