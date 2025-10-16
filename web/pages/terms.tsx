@@ -70,32 +70,24 @@ export default function TermsAndConditions() {
           <motion.section className="space-y-8" variants={containerVariants}>
             <motion.article variants={fadeInUp}>
               <h2 className="text-2xl font-bold mb-4">Acceptance of Terms</h2>
-              <p className="leading-7">
-                By accessing and using SymptomSync (&quot;the App&quot;), you
-                accept and agree to be bound by the terms and provision of this
-                agreement. If you do not agree to these terms, please do not use
-                our services.
+              <p className="leading-7">  
+              Al acceder y utilizar Clinica Medica Sur, usted acepta los términos y condiciones de este acuerdo. Si no acepta estos términos, le rogamos que no utilice nuestros servicios.
               </p>
             </motion.article>
 
             <motion.article variants={fadeInUp}>
               <h2 className="text-2xl font-bold mb-4">Changes to Terms</h2>
               <p className="leading-7">
-                We reserve the right to update or change these Terms and
-                Conditions at any time without prior notice. Any changes will be
-                effective immediately upon posting on the App. Your continued
-                use of the service after any modifications to the Terms
-                constitutes your acceptance of the new Terms.
+
+              Nos reservamos el derecho de actualizar o modificar estos Términos y Condiciones en cualquier momento sin previo aviso. Cualquier cambio entrará en vigor inmediatamente después de su publicación en la Aplicación. Su uso continuado del servicio después de cualquier modificación de los Términos constituye su aceptación de los nuevos Términos.
               </p>
             </motion.article>
 
             <motion.article variants={fadeInUp}>
               <h2 className="text-2xl font-bold mb-4">User Responsibilities</h2>
               <p className="leading-7 mb-4">
-                When you use SymptomSync, you agree that you will not engage in
-                any activity that interferes with or disrupts the services. You
-                are responsible for all activities that occur under your
-                account.
+               
+              Al usar Clinica Medica Sur, usted se compromete a no participar en ninguna actividad que interfiera o interrumpa los servicios. Usted es responsable de todas las actividades que se realicen en su cuenta.
               </p>
               <ul className="list-disc ml-6 space-y-2">
                 <li>
@@ -116,11 +108,8 @@ export default function TermsAndConditions() {
             <motion.article variants={fadeInUp}>
               <h2 className="text-2xl font-bold mb-4">Intellectual Property</h2>
               <p className="leading-7">
-                All content, trademarks, and data on SymptomSync, including but
-                not limited to text, graphics, logos, icons, images, as well as
-                the software used, are the property of SymptomSync or its
-                licensors. Unauthorized use of any material may violate
-                copyright laws.
+
+            Todo el contenido, las marcas comerciales y los datos de Clinica Medica Sur, incluyendo, entre otros, textos, gráficos, logotipos, iconos, imágenes y el software utilizado, son propiedad de Clinica Medica Sur o de sus licenciantes. El uso no autorizado de cualquier material puede infringir las leyes de derechos de autor.
               </p>
             </motion.article>
 
@@ -129,10 +118,7 @@ export default function TermsAndConditions() {
                 Limitation of Liability
               </h2>
               <p className="leading-7">
-                In no event shall SymptomSync, nor its directors, employees,
-                partners, agents, suppliers, or affiliates, be liable for any
-                indirect, incidental, special, consequential or punitive
-                damages, arising out of your use of or inability to use the App.
+              En ningún caso, Clinica Medica Sur, ni sus directores, empleados, socios, agentes, proveedores o afiliados serán responsables de ningún daño indirecto, incidental, especial, consecuente o punitivo que surja de su uso o de la imposibilidad de usar la Aplicación.
               </p>
             </motion.article>
 
@@ -154,7 +140,7 @@ export default function TermsAndConditions() {
                   href="mailto:support@symptomsync.com"
                   className="text-foreground underline"
                 >
-                  support@symptomsync.com
+                  support@clinicamedicasur.com
                 </a>
                 .
               </p>
